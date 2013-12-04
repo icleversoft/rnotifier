@@ -1,0 +1,22 @@
+#!/usr/bin/env ruby
+#$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+require 'daemons'
+require 'rnotifier'
+
+def daemonize
+  options = {
+      :backtrace  => true,
+      :ontop      => false,
+      :log_output => true,
+      :app_name => 'rnotifierd'
+    }
+  Daemons.daemonize(options)
+end
+
+$stdout.sync = true
+
+daemonize
+
+server = Rnotifier::Server.new
+server.start!
